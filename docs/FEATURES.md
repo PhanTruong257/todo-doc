@@ -16,6 +16,7 @@ Tài liệu này ghi lại toàn bộ tính năng **đã hoàn thiện**, **đan
 | **Giai đoạn 2: Từ Vựng & Lộ Trình 30 Ngày (`KoreanVocabView`)** | ✅ Hoàn thành | 240 từ lộ trình TOPIK 1, Cây phả hệ Sino-Korean, Flashcard SRS SM-2 |
 | **Giai đoạn 3: Ngữ Pháp Thực Chiến (`KoreanGrammarView`)** | ✅ Hoàn thành | 16 chủ điểm ngữ pháp + Quiz, Lắp ráp câu SOV, Bảng chia động từ |
 | **Giai đoạn 4: Hội Thoại & Nhập Vai (`KoreanDialogueView`)** | ✅ Hoàn thành | 60+ mẫu câu, Nhập vai 2 chiều Roleplay, Nhận diện giọng nói Web Speech, Dịch GTX |
+| **Giai đoạn 5: Đấu Trường Trò Chơi & Phản Xạ (`KoreanGamesView`)** | ✅ Hoàn thành | Đấu trường 60s Speed Rush, Tập đồ nét thư pháp Canvas, Chat KakaoTalk mô phỏng, Bản đồ Tuyến 2 Seoul Metro, Xuất thẻ K-Card Instagram Story |
 | **Cẩm Nang Bí Quyết & Động Lực (`StudyAdviceModal`)** | ✅ Hoàn thành | 16 lời khuyên sư phạm thực chiến, châm ngôn tiếng Hàn TTS, Spotlight, lọc danh mục |
 | **Gamification & Thói Quen Học Tập** | ✅ Hoàn thành | Chuỗi ngày Streak 🔥, Nhiệm vụ ngày Daily Quests, 14-Day Heatmap |
 | **Kho Từ Vựng Tiếng Anh Oxford 5000 (`FlashcardView`)** | ✅ Hoàn thành | 4,954 từ vựng 13 chủ đề ngữ nghĩa, CEFR A1-C1, Flashcard 3D SRS SM-2 |
@@ -112,14 +113,45 @@ Tài liệu này ghi lại toàn bộ tính năng **đã hoàn thiện**, **đan
   - 3 kịch bản thực chiến: Gọi cà phê tại Mega Coffee, Mua đồ tại cửa hàng tiện lợi CU, Đi Taxi tại Seoul.
   - Giọng đọc thoại NPC bản xứ, phân nhánh câu trả lời thực tế theo ngữ cảnh.
 - [x] **Nhận Diện Giọng Nói Micro (Web Speech Recognition)**: Thu âm phát âm tiếng Hàn `ko-KR` của người học và chấm điểm độ chính xác phát âm theo thời gian thực.
-- [x] **Công Cụ Dịch 2 Chiều Hàn ⇄ Việt (Google GTX API)**:
-  - Dịch câu tự do 2 chiều Hàn ⇄ Việt, phát âm audio giọng đọc bản xứ.
-  - Nút 1-chạm lưu câu dịch thành thẻ Flashcard cá nhân.
-  - Modal cảnh báo bản dịch máy (Safe Machine Translation) cho phép duyệt và chỉnh sửa trước khi lưu.
+- [x] **Giải Mã Lời Bài Hát K-Pop & Phim K-Drama (`KDramaQuotesView`)**: 12 trích đoạn bài hát hit & phim kinh điển, bóc tách từ vựng, ngữ pháp và nút 1-chạm lưu vào Flashcard.
+- [x] **Thử Thách Uốn Lưỡi Siêu Tốc (`TongueTwisterView` 잰말놀이)**: 6 câu líu lưỡi từ Cấp 1 đến Trùm Cuối, 3 tốc độ phát âm (0.75x, 1.0x, 1.35x), chấm điểm phát âm qua Micro.
+- [x] **Công Cụ Dịch 2 Chiều Hàn ⇄ Việt (Google GTX API)**: Dịch câu tự do 2 chiều Hàn ⇄ Việt, phát âm audio giọng đọc bản xứ, nút 1-chạm lưu thành thẻ Flashcard cá nhân có cảnh báo bản dịch máy.
 
 ---
 
-### 🔹 Phân Hệ 5: Cẩm Nang Bí Quyết & Động Lực Học Tập (`StudyAdviceModal`)
+### 🔹 Phân Hệ 5: Giai Đoạn 5 - Đấu Trường Trò Chơi & Phản Xạ K-Play (`KoreanGamesView`)
+- [x] **Đấu Trường Phản Xạ 60 Giây (Speed Rush Arena ⚡)**:
+  - 60s đếm ngược, bộ câu hỏi phản xạ 30+ câu đa dạng (Chữ cái Hangeul, Từ vựng nhanh, Văn hóa Hàn, Chữ số, Phản xạ giao tiếp).
+  - Hệ thống Combo Streak x2, x3, x5 nhân bội điểm số và hiệu ứng rung/đổi màu viền rực lửa.
+  - Bộ tổng hợp âm thanh Web Audio API (chime đúng, buzz sai, combo arpeggio, fanfare kết thúc, 0 asset ngoài, chạy offline).
+  - Hiệu ứng pháo hoa Confetti Canvas khi kết thúc thử thách với điểm cao.
+  - Bảng xếp hạng thành tích S / A / B / C và lưu kỷ lục vào `localStorage`.
+- [x] **Tập Đồ Nét Chữ Chuẩn Thư Pháp (Hangeul Stroke Drawing Canvas 🖌️)**:
+  - Canvas vẽ thư pháp HTML5 độ phân giải cao Retina, hỗ trợ Pointer Events chặn cuộn màn hình trên mobile (`touch-action: none`).
+  - Lưới kẻ ô 원고지 truyền thống và mẫu chữ bóng mờ (Guide overlay).
+  - Hướng dẫn quy tắc thứ tự nét (Stroke Order) chuẩn sư phạm: từ trên xuống dưới, từ trái sang phải cho phụ âm, nguyên âm và chữ ghép (`ㄱ, ㄴ, ㄷ, ㄹ, ㅁ, ㅅ, ㅇ, ㅎ, ㅏ, ㅗ, 한, 꽃`).
+  - Đổi màu mực: Đen Thư Pháp (`#0f172a`) và Đỏ Son K-Pastel (`#f43f5e`), điều chỉnh độ dày nét bút.
+  - Thuật toán chấm điểm độ chính xác nét vẽ % theo tọa độ chuẩn.
+  - Hiệu ứng cánh hoa anh đào rơi 🌸 khi hoàn thành xuất sắc nét chữ.
+- [x] **Mô Phỏng Nhắn Tin K-Chat KakaoTalk 💬**:
+  - Giao diện phòng chat mô phỏng chuẩn ứng dụng KakaoTalk Hàn Quốc (header vàng, bong bóng chat, thời gian, số "1" chưa đọc tự động biến mất khi đối phương xem).
+  - 4 kịch bản thực tế: Ăn khuya gà rán & bia Chimaek (`chimaek`), Order cà phê quán xinh Hongdae (`cafe`), Lạc đường ở ga Gangnam (`subway`), Tâm tình idol K-Pop trên Weverse/Bubble (`idol`).
+  - Nghe phát âm từng tin nhắn bằng giọng đọc bản xứ qua nút loa `Volume2`.
+  - Hiệu ứng đối phương đang gõ tin nhắn (Typing indicator animation).
+  - Lựa chọn câu phản hồi tiếng Hàn có gợi ý nghĩa tiếng Việt, tích hợp thang đo độ thân thiết (Affinity Heart ❤️ 100%).
+- [x] **Bản Đồ Thám Hiểm Tuyến Số 2 Seoul Metro 🚇**:
+  - Bản đồ trực quan Tuyến Vòng Tròn Xanh Lá Cây (2호선) với 5 ga biểu tượng: Hongdae (239), Myeongdong (202), Dongdaemun DDP (205), Gangnam (222), Jamsil Lotte World (216).
+  - Âm thanh chuông báo tàu cập bến đặc trưng Seoul Metro (Ding-Dong Melody).
+  - Nhiệm vụ giải đố xử lý tình huống sống còn tại từng ga bằng tiếng Hàn.
+  - Hộ Chiếu Du Hành Seoul (Seoul Travel Passport): Đóng dấu con dấu đỏ truyền thống 💮 (`홍대 도장, 명동 도장...`) lưu bền vững vào `localStorage`.
+- [x] **Thẻ Thành Tích Instagram Story K-Card 📸✨**:
+  - Trình xuất ảnh Polaroid / Story tỉ lệ 9:16 bằng HTML5 Canvas siêu nét.
+  - Hiển thị ngày học tiếng Hàn (`2026년 10월 16일`), Kỷ lục Speed Rush, Số con dấu Metro, Danh ngôn tiếng Hàn truyền cảm hứng có thể tùy biến.
+  - Tải ảnh PNG về máy và nút Chia sẻ trực tiếp qua Web Share API trên điện thoại.
+
+---
+
+### 🔹 Phân Hệ 6: Cẩm Nang Bí Quyết & Động Lực Học Tập (`StudyAdviceModal`)
 - [x] **16 Lời Khuyên Sư Phạm Thực Chiến & Châm Ngôn Truyền Lửa**:
   - *Tâm Lý & Động Lực*: Quy tắc 15 phút vàng, giải mã đường cong quên Ebbinghaus, vượt qua nỗi sợ nói sai, nuôi dưỡng động lực ghi nhận từng tiến bộ nhỏ.
   - *Chữ Cái & Phát Âm*: Lợi thế phát âm của người Việt, cai Romaja, mẹo hình học Âm-Dương, mẹo nhỏ với tờ giấy mỏng kiểm tra hơi bật.
@@ -260,6 +292,7 @@ Tài liệu này ghi lại toàn bộ tính năng **đã hoàn thiện**, **đan
 | **2026-10-16** | Antigravity AI + User | Nâng Cấp Giao Diện Tone Hồng K-Pastel Blossom & 2 Tính Năng Sáng Tạo (K-Pop/K-Drama Lyrics Decoder & Uốn Lưỡi Siêu Tốc): (1) **Theme Switcher & K-Pastel Blossom UI**: Tái thiết kế toàn bộ hệ thống màu sắc mặc định sang tone hồng hoa anh đào sáng dịu mát (Pastel Blossom `#fff0f3`), nền radial gradient ngọt ngào, card kính mờ hồng sữa và tương phản cao chữ tím than sẫm `#1f1635`; tích hợp nút toggle 1-chạm 🌸/🌙 trên Header; (2) **Giải Mã Lời Bài Hát K-Pop & Phim K-Drama (`KDramaQuotesView`)**: Tuyển tập 12 bản hit K-Pop (BTS, BLACKPINK, NewJeans, IU, Taeyeon, IVE) & phim kinh điển (Queen of Tears, Hạ Cánh Nơi Anh, Goblin, Reply 1988), phát âm giọng Hàn `ko-KR`, bóc tách từng từ vựng, ngữ pháp trọng tâm và nút 1-chạm lưu vào Flashcard SRS; (3) **Thử Thách Uốn Lưỡi Siêu Tốc (`TongueTwisterView` 잰말놀이)**: 6 câu líu lưỡi từ Cấp 1 đến Trùm Cuối đài KBS, 3 tốc độ phát âm (Rùa 0.75x, Thỏ 1.0x, Báo Đốm 1.35x), tích hợp Micro Web Speech chấm điểm độ chính xác % và trao huy hiệu chinh phục; (4) **100% Mobile Responsive**: Tối ưu chuẩn ngón tay cái, tab trượt ngang 0 horizontal scroll trên mọi điện thoại. |
 | **2026-10-16** | Antigravity AI + User | Tinh Chỉnh Toàn Diện Độ Tương Phản & Thẩm Mỹ Giao Diện Pastel Blossom (UI Color & Contrast Harmony): (1) **Khắc Phục Lỗi Ký Tự Trắng Ẩn Trên Nền Trắng**: Thay thế triệt để `color: #fff;` trên toàn bộ thẻ chữ cái Hangeul (`.journey-letter-char`, `.hangeul-char-big`, `.word-hangeul-text`) bằng `color: var(--text-main);` (`#1e1b4b` Deep Indigo Charcoal sắc nét trên nền sáng và sáng dịu trên dark theme), xử lý triệt để hiện tượng chữ cái tàng hình không đọc được; (2) **Xóa Bỏ Khối Slate Tối Mù Giữa Trang (`.journey-current-header-card`)**: Chuyển đổi khối tổng quan ngày học từ nền slate tối (`rgba(30, 41, 59)`) sang card kính mờ hoa anh đào thanh nhã (`linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 241, 245, 0.95))`), viền hồng ngọc mềm mại và đổ bóng cao cấp; (3) **Hài Hòa Hệ Thống Badge**: Loại bỏ màu xanh lơ (cyan `#38bdf8`) bị lạc tông, chuyển sang tông hồng ngọc (`#e11d48`) và cam mật ong (`#d97706`) ấm áp, chuẩn thẩm mỹ K-Design; (4) **Chuẩn Hóa Danh Xưng "5 Bước Nền Tảng"**: Đổi tên toàn bộ "Lộ Trình 5 Ngày" thành **"5 Bước Nền Tảng ⭐"** và các pill ngày thành **"Bước 1, Bước 2, Bước 3, Bước 4, Bước 5"**, tạo cảm giác nhẹ nhàng, học tập theo từng cột mốc tự nhiên không gò bó thời gian; (5) **Kiểm Tra Build 0 Lỗi**: Xác nhận biên dịch Vite sạch sẽ (`npm run build`), 0 lỗi TypeScript. |
 | **2026-10-16** | Antigravity AI + User | Tái Thiết Kế Hệ Màu Chuẩn Thẩm Mỹ K-Design: Strawberry Milk & Snow (Quy Tắc Phối Màu 60-30-10 & Tương Phản Hoàn Hảo): (1) **Nền Trắng Tuyết Tinh Khôi 60%**: Chuyển đổi toàn bộ nền trang từ tone hồng đục sang nền trắng sứ thoáng đãng (`--bg-dark: #fcfbfb` kèm quầng sáng dâu tây siêu nhẹ radial gradient 0.25-0.35), giúp giao diện không bị ngợp, sáng bừng và cực kỳ hiện đại theo xu hướng thiết kế K-Design / Apple / Notion; (2) **Cấu Trúc Thẻ Trắng Sứ & Chữ Đậm Sắc Nét 30%**: Thiết lập nền thẻ card trắng tinh khiết (`--bg-card: #ffffff`), viền tinh tế (`rgba(226, 232, 240, 0.85)`), và chữ Slate sẫm sắc nét đỉnh cao đạt chuẩn WCAG AAA 16:1 (`--text-main: #0f172a`, `--text-muted: #475569`); (3) **Điểm Nhấn Hồng Dâu Tây Tươi Sáng 10%**: Sử dụng sắc hồng dâu ngọt ngào (`--primary: #f43f5e`, hover `#e11d48`) làm điểm nhấn đắt giá cho nút bấm chính, tab đang chọn, icon hoạt họa và huy hiệu; (4) **Chuẩn Hóa Toàn Diện Hệ Thống Component**: Rà soát và sửa triệt để tất cả các thành phần bị dính mã màu đen tối cũ: `TodoItem.css` (chữ tiêu đề hiển thị sắc nét, badge màu xanh dương/hồng tương phản cao trên nền sáng), `CalendarStrip.css` (thẻ ngày trắng sáng, số ngày đậm nét, pill Hôm nay nổi bật), `StudentSidebar.css` (tiêu đề gradient sắc nét, avatar thẻ card trắng sáng), `MobileHeader.css` (thanh tìm kiếm & tab phẳng thanh thoát), `DailyQuestsModal.css` (modal trắng sứ sang trọng thay vì hộp đen xì), `StudyAdviceModal.css` (cẩm nang bí quyết đổi sang nền sáng kết hợp điểm nhấn hổ phách & dâu tây), `StatsCards.css`, `FilterBar.css`, `Footer.css`; (5) **Bảo Tồn Toàn Vẹn Dark Theme**: Mọi component đều giữ nguyên hoặc tối ưu thêm lớp `[data-theme='dark']` phục vụ người dùng thích chế độ ban đêm. |
+| **2026-10-16** | Antigravity AI + User | Triển Khai Toàn Diện Giai Đoạn 5: Đấu Trường Trò Chơi & Phản Xạ K-Play (4 Mini-Games Sáng Tạo & Thẻ Instagram Story): (1) **Đấu Trường Phản Xạ 60 Giây (Speed Rush Arena ⚡)**: Bộ đếm ngược 60s, 30+ câu trắc nghiệm tốc độ (chữ cái, từ vựng, văn hóa, số đếm, phản xạ), chuỗi combo Streak x2-x5 nhân điểm rực lửa, Web Audio SFX synth (không cần mp3 ngoài), pháo hoa Confetti canvas, xếp hạng S/A/B/C và lưu kỷ lục vào localStorage; (2) **Tập Đồ Nét Thư Pháp Hangeul (Stroke Canvas Game 🖌️)**: Canvas Retina hỗ trợ Pointer Events chặn cuộn màn hình mobile (touch-action: none), lưới kẻ ô 원고지, hướng dẫn thứ tự nét chuẩn (Stroke Order), đổi mực Đen Thư Pháp #0f172a / Hồng Son #f43f5e, tính độ chuẩn xác % và hiệu ứng cánh hoa anh đào rơi 🌸; (3) **Mô Phỏng Nhắn Tin K-Chat KakaoTalk 💬**: Giao diện chat chuẩn KakaoTalk Hàn Quốc, 4 kịch bản thực tế (Chimaek gà rán, Gọi cafe Hongdae, Lạc đường ga Gangnam, Tâm tình idol K-Pop Weverse), hiệu ứng typing indicator, phát âm audio TTS từng tin nhắn, phân nhánh câu trả lời và thang đo thân thiết Heart ❤️ 100%; (4) **Bản Đồ Thám Hiểm Tuyến Số 2 Seoul Metro 🚇**: Bản đồ tàu điện vòng tròn Line 2 qua 5 ga nổi tiếng (Hongdae, Myeongdong, Dongdaemun DDP, Gangnam, Jamsil Lotte World), chuông báo tàu cập bến Ding-Dong, nhiệm vụ giải đố xử lý tình huống sống còn, đóng dấu con dấu truyền thống 💮 vào Hộ chiếu Seoul; (5) **Trình Xuất Thẻ K-Card Story Aesthetic 📸✨**: Xuất ảnh Polaroid / Instagram Story 9:16 bằng HTML5 Canvas siêu nét, tổng hợp kỷ lục điểm số, số con dấu Metro và danh ngôn tiếng Hàn truyền cảm hứng, tải PNG về máy và chia sẻ Web Share API; (6) **100% Mobile Responsive & Build 0 Lỗi**: Tích hợp nút tab Trò Chơi trên Mobile Bottom Nav, Header Dropdown GĐ 5, kiểm tra build sạch sẽ 0 lỗi TypeScript. |
 
 
 
