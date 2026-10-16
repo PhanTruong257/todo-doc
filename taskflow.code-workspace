@@ -1,0 +1,25 @@
+{
+  "folders": [
+    {
+      "name": "📌 Docs & Agents (Root)",
+      "path": "."
+    },
+    {
+      "name": "⚛️ Frontend (React TS)",
+      "path": "source/frontend"
+    },
+    {
+      "name": "🟢 Backend (NestJS)",
+      "path": "source/backend"
+    }
+  ],
+  "settings": {
+    "git.autoRepositoryDetection": true,
+    "git.detectSubmodules": true,
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.git": true
+    }
+  }
+}

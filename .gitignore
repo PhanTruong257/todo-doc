@@ -1,0 +1,27 @@
+# ==========================================
+# TaskFlow Workspace Git Ignore (Root Repo)
+# ==========================================
+
+# 1. Source code repositories (tracked by their own independent git repos)
+source/
+
+# 2. Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 3. Environment & Local secrets
+.env
+.env.local
+*.local
+
+# 4. Logs and diagnostics
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 5. Temporary and cache directories
+.tmp/
+temp/
+scratch/
