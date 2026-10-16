@@ -11,55 +11,169 @@ Tài liệu này ghi lại toàn bộ tính năng **đã hoàn thiện**, **đan
 
 | Hạng mục | Trạng thái | Ghi chú |
 | :--- | :---: | :--- |
-| **Backend Core (NestJS 12)** | ✅ Hoàn thành | Đầy đủ CRUD, Swagger Docs, Mongoose |
-| **Database (MongoDB Atlas AWS)** | ✅ Hoàn thành | Gói M0 Free 512MB, AWS Region Singapore |
-| **Backend Deployment (AWS EC2 Docker)** | ✅ Hoàn thành | Docker container `todo-api` chạy live tại `http://13.228.71.202:4000` |
-| **Backend CI/CD (GitHub Actions)** | ✅ Hoàn thành | Tự động SSH vào EC2 rebuild Docker khi push tag `v*` (`.github/workflows/deploy.yml`) |
-| **Frontend Core (React 19 TS)** | ✅ Hoàn thành | Vite, Co-location Components, Typescript Strict |
-| **Kiến trúc Co-location Component** | ✅ Hoàn thành | Mỗi component gom chung: View `.tsx` + Hook `.ts` + CSS `.css` |
-| **Frontend Deployment (AWS S3 + CloudFront)** | ✅ Hoàn thành | Live tại `https://d3joa566sl3ve2.cloudfront.net` (SSL CDN tốc độ cao) |
-| **Frontend CI/CD (GitHub Actions)** | ✅ Hoàn thành | Tự động build & sync S3/CloudFront khi push tag `v*` (`.github/workflows/deploy.yml`) |
-| **Tài liệu Hạ tầng & Runbook** | ✅ Hoàn thành | Ghi lại toàn bộ kiến trúc & hướng dẫn tại [docs/INFRASTRUCTURE.md](./INFRASTRUCTURE.md) |
-| **Authentication & Users** | ⏳ Chưa bắt đầu | Dự kiến giai đoạn 2 (JWT, Refresh Token) |
+| **Kiến trúc Multi-Root Workspace (3 Git Repos)** | ✅ Hoàn thành | `todo-doc` (Root/Docs/Agents), `todo-fe` (Frontend), `todo-be` (Backend) |
+| **Giai đoạn 1: Bảng Chữ Cái Hangeul (`HangeulView`)** | ✅ Hoàn thành | Lộ trình 5 ngày, IME Automata, Viết tên Hangeul, Minimal Pairs, 7 Patchim |
+| **Giai đoạn 2: Từ Vựng & Lộ Trình 30 Ngày (`KoreanVocabView`)** | ✅ Hoàn thành | 240 từ lộ trình TOPIK 1, Cây phả hệ Sino-Korean, Flashcard SRS SM-2 |
+| **Giai đoạn 3: Ngữ Pháp Thực Chiến (`KoreanGrammarView`)** | ✅ Hoàn thành | 16 chủ điểm ngữ pháp + Quiz, Lắp ráp câu SOV, Bảng chia động từ |
+| **Giai đoạn 4: Hội Thoại & Nhập Vai (`KoreanDialogueView`)** | ✅ Hoàn thành | 60+ mẫu câu, Nhập vai 2 chiều Roleplay, Nhận diện giọng nói Web Speech, Dịch GTX |
+| **Cẩm Nang Bí Quyết & Động Lực (`StudyAdviceModal`)** | ✅ Hoàn thành | 16 lời khuyên sư phạm thực chiến, châm ngôn tiếng Hàn TTS, Spotlight, lọc danh mục |
+| **Gamification & Thói Quen Học Tập** | ✅ Hoàn thành | Chuỗi ngày Streak 🔥, Nhiệm vụ ngày Daily Quests, 14-Day Heatmap |
+| **Kho Từ Vựng Tiếng Anh Oxford 5000 (`FlashcardView`)** | ✅ Hoàn thành | 4,954 từ vựng 13 chủ đề ngữ nghĩa, CEFR A1-C1, Flashcard 3D SRS SM-2 |
+| **Giao Diện Di Động (100% Mobile Responsive)** | ✅ Hoàn thành | Mobile Bottom Nav, Header siêu mỏng 36px, Footer Glassmorphism, Zero Horizontal Scroll |
+| **Backend Core (NestJS 12 + MongoDB Atlas)** | ✅ Hoàn thành | Modules Flashcards & Todos, Mongoose Schema, DTO Validation, Swagger Docs |
+| **Hạ Tầng AWS & CI/CD Tự Động** | ✅ Hoàn thành | S3 + CloudFront CDN SSL (FE), EC2 Ubuntu Docker (BE), GitHub Actions deploy qua Tag |
 
 ---
 
 ## 🛠️ 2. Chi Tiết Các Tính Năng Đã Triển Khai (Done)
 
-### 🔹 Backend (NestJS + TypeScript) - Repo `todo-be`
-- [x] **Kết nối MongoDB**: Sử dụng `@nestjs/mongoose` kết nối tới MongoDB Atlas qua biến môi trường `MONGODB_URI`.
-- [x] **Schema Todo**:
-  - `id`: Định danh duy nhất (tự động map từ MongoDB `_id`).
-  - `title`: Tiêu đề (bắt buộc, trim khoảng trắng).
-  - `description`: Mô tả chi tiết (tùy chọn).
-  - `isCompleted`: Trạng thái hoàn thành (boolean, default: `false`).
-  - `priority`: Mức độ ưu tiên (`low` | `medium` | `high`, default: `medium`).
-  - `dueDate`: Hạn chót hoàn thành (ISO Date string).
-  - `tags`: Danh sách nhãn phân loại (string array).
-  - `createdAt`, `updatedAt`: Tự động tạo bởi Mongoose timestamps.
-- [x] **REST API Endpoints**:
-  - `POST /todos`: Tạo mới công việc (Validation qua `CreateTodoDto`).
-  - `GET /todos`: Lấy danh sách công việc (Hỗ trợ query: `search`, `status`, `priority`).
-  - `GET /todos/stats`: Lấy thống kê số lượng (Tổng, Đang làm, Đã xong, Ưu tiên cao).
-  - `GET /todos/:id`: Lấy chi tiết 1 công việc theo ObjectId.
-  - `PATCH /todos/:id`: Cập nhật công việc (Validation qua `UpdateTodoDto`).
-  - `PATCH /todos/:id/toggle`: Đảo trạng thái hoàn thành nhanh (true <-> false).
-  - `DELETE /todos/:id`: Xóa công việc.
-- [x] **Swagger OpenAPI**: Truy cập tại `/api/docs` để xem và chạy thử API trực tiếp.
-- [x] **CORS**: Bật cho phép Frontend gọi API không bị chặn cross-origin.
+### 🔹 Phân Hệ 1: Giai Đoạn 1 - Bảng Chữ Cái & Phát Âm Hangeul (`HangeulView`)
+- [x] **Lộ Trình 5 Ngày Nền Tảng**:
+  - **Ngày 1**: 9 ký tự nền tảng (6 nguyên âm `ㅏ, ㅓ, ㅗ, ㅜ, ㅡ, ㅣ` + 3 phụ âm `ㅇ, ㄴ, ㅁ`) & 7 từ vựng đầu tiên (`아이`, `오이`, `우유`...).
+  - **Ngày 2**: 7 phụ âm phát âm tự nhiên (`ㄱ, ㄷ, ㅂ, ㅅ, ㅈ, ㄹ, ㅎ`) & từ vựng đồ vật quen thuộc (`나무`, `모자`, `바지`...).
+  - **Ngày 3**: Nguyên lý thêm nét Sejong (`ㄱ➔ㅋ`, `ㄷ➔ㅌ`, `ㅂ➔ㅍ`) & Từ mượn quốc tế Konglish (`커피`, `피자`, `카메라`...).
+  - **Ngày 4**: Phụ âm căng (`ㄲ, ㄸ, ㅃ, ㅆ, ㅉ`) & Từ vựng gia đình thân thuộc (`아빠`, `오빠`...).
+  - **Ngày 5**: Đánh vần Patchim (phụ âm cuối) đối chiếu vần tiếng Việt (`-c, -t, -p, -m, -n, -ng`) ➔ Đọc thông câu chào (`안녕하세요!`).
+- [x] **Quy Trình Học 3 Bước Mỗi Ngày**:
+  - *Bước 1 - Âm trước hình sau*: Hình ảnh tượng hình, mẹo nhớ trực quan và audio giọng bản xứ `ko-KR`.
+  - *Bước 2 - Từ vựng thực tế*: Đọc các từ vựng thật ngoài đời thực, kèm phân tích cấu tạo ghép âm tiết.
+  - *Bước 3 - Thử thách phản xạ*: Trắc nghiệm phản xạ nhận diện âm thanh và mặt chữ, chấm điểm và giải thích tức thì.
+- [x] **Bộ Giả Lập Gõ IME Automata 2-Set (HangulImeAutomata)**:
+  - Ghép âm tiết động Unicode theo công thức `(Choseong * 21 + Jungseong) * 28 + Jongseong + 0xAC00`.
+  - Tự động đẩy phụ âm cuối sang âm tiết tiếp theo khi gặp nguyên âm (ví dụ: `먹` + `ㅓ` ➔ `머거`).
+  - Hỗ trợ ghép nguyên âm phức (`ㅗ + ㅏ = ㅘ`) và patchim kép (`ㄱ + ㅅ = ㄳ`).
+  - Hỗ trợ bàn phím ảo chạm màn hình và phím vật lý máy tính (ánh xạ `event.code` triệt tiêu xung đột gõ tiếng Việt Telex/VNI).
+- [x] **Tự Viết Tên Bạn Bằng Chữ Hangeul ✍️**:
+  - Danh bạ 50+ tên tiếng Việt thông dụng (`Trường`, `Nguyệt`, `Anh`, `Bình`, `Dũng`, `Hương`, `Linh`, `Nam`, `Phương`...).
+  - Phiên âm chuẩn Hán-Hàn, phân tích ý nghĩa, phát âm giọng đọc bản xứ và tạo Name Card chia sẻ.
+- [x] **Cặp Âm Tối Thiểu (Minimal Pairs)**:
+  - Luyện phân biệt bộ ba phụ âm: Thường (`ㅂ/ㅈ/ㄱ`) vs Bật hơi (`ㅍ/ㅊ/ㅋ`) vs Căng (`ㅃ/ㅉ/ㄲ`) qua các cặp từ đối chiếu (`불/풀/뿔`, `자다/차다/짜다`, `달/탈/딸`).
+  - Phân biệt nguyên âm dễ nhầm: `ㅓ/ㅗ` (`어머니/오빠`), `ㅡ/ㅜ` (`음식/우유`).
+- [x] **7 Nhóm Âm Đại Diện Patchim & Quy Tắc Biến Âm**:
+  - Bài học 7 nhóm phụ âm cuối đại diện (`ㄱ, ㄴ, ㄷ, ㄹ, ㅁ, ㅂ, ㅇ`).
+  - 4 quy tắc biến âm cốt lõi: Nối âm (Liaison), Mũi hóa (Nasalization), Căng âm (Tensification), Bật hơi (Aspiration) kèm đối chiếu dạng viết vs dạng đọc thực tế (`[함니다]`, `[머거요]`).
+- [x] **Công Tắc Ẩn/Hiện Phiên Âm Latin (Romaja Toggle 👁️)**: Lưu trạng thái `localStorage` trên toàn hệ thống giúp người học cai phụ thuộc Latin, ép phản xạ trực tiếp trên chữ Hangeul.
 
 ---
 
-### 🔹 Frontend (React 19 + TypeScript + Vite) - Repo `todo-fe`
-- [x] **Kiến trúc Co-location Component**:
-  - `Header/` (`Header.tsx`, `Header.css`): Header thương hiệu, huy hiệu kết nối `Backend Connected` / `Local Preview`.
-  - `StatsCards/` (`StatsCards.tsx`, `StatsCards.css`): 4 thẻ thống kê trực quan với icon Lucide.
-  - `TodoInput/` (`TodoInput.tsx`, `useTodoInput.ts`, `TodoInput.css`): Form thêm việc tách hook logic riêng.
-  - `FilterBar/` (`FilterBar.tsx`, `FilterBar.css`): Thanh tìm kiếm thời gian thực + Tab lọc trạng thái + Dropdown lọc độ ưu tiên.
-  - `TodoItem/` (`TodoItem.tsx`, `useTodoItem.ts`, `TodoItem.css`): Từng thẻ công việc, nút toggle checkbox, sửa inline có lưu/hủy, xóa.
-  - `TodoList/` (`TodoList.tsx`, `useTodos.ts`, `TodoList.css`): Render danh sách, xử lý loading spinner, empty state.
-- [x] **Fallback Preview Mode**: Nếu Backend chưa bật, Frontend tự động fallback sang `localStorage` mượt mà, không bị sập trang.
-- [x] **Thẩm mỹ (UI/UX)**: Glassmorphism theme, nền Gradient màu tối cao cấp, micro-animations, không dùng Tailwind thô.
+### 🔹 Phân Hệ 2: Giai Đoạn 2 - Kho Từ Vựng & Lộ Trình 30 Ngày TOPIK 1 (`KoreanVocabView`)
+- [x] **Giáo Trình Lộ Trình 30 Ngày TOPIK 1 (240 Từ Vựng)**:
+  - Phân bổ qua 5 tuần học: Tuần 1 (Sinh tồn & Cá nhân), Tuần 2 (Hành động đời sống), Tuần 3 (Cảm xúc & Thời tiết), Tuần 4 (Số đếm & Mua sắm), Tuần 5 (Liên từ & Về đích).
+  - Cấu trúc bài học ngày: Mục tiêu (Focus) + Mẹo ngữ pháp (Grammar Tip) + Lời khuyên ghi nhớ thực chiến (Quick Advice).
+  - Thẻ từ vựng đa tầng: Hangeul lớn, phát âm `ko-KR`, phiên âm Latin, biến âm thực tế, liên kết âm Hán - Việt tương đương và câu ví dụ song ngữ.
+  - Thẻ xem trước ngày mai (Tomorrow Preview) tạo động lực học tập liên tục.
+- [x] **Cây Phả Hệ Âm Hán-Hàn ("Học 1 Biết 10" - `SinoKoreanView`)**:
+  - Tra cứu 12+ gốc Hán-Hàn cốt lõi (`학 - HỌC`, `생 - SINH`, `인 - NHÂN`, `국 - QUỐC`, `원 - VIÊN`, `식 - THỰC`, `화 - HÓA`, `전 - ĐIỆN`, `동 - ĐỘNG`, `실 - THẤT`, `문 - VĂN`, `기 - KHÍ`).
+  - Bung ra mạng lưới từ ghép phái sinh trực quan kèm giải nghĩa Hán-Việt tương đồng.
+  - Mini Game ghép 2 gốc chữ sinh từ vựng có chấm điểm phản xạ.
+- [x] **Kho Từ Vựng TOPIK 1 Chuyên Sâu (124+ Từ Vựng)**:
+  - Phân loại 8 chủ đề thiết yếu (Chào hỏi, Đồ vật, Gia đình, Đồ ăn, Địa điểm, Thời gian, Hoạt động, Cảm xúc).
+  - Đầy đủ thông tin: Từ loại POS, dạng từ điển & dạng chia đuôi câu (`-아요/어요`), phân loại từ gốc Hán / thuần Hàn / bạn giả (False Friends: `인사`, `방학`, `공부`, `기분`, `약속`).
+- [x] **Hệ Thống Ôn Tập Flashcard SRS SuperMemo-2 (SM-2)**:
+  - 4 nút đánh giá khách quan: Quên (`Again`), Khó (`Hard`), Tốt (`Good`), Dễ (`Easy`).
+  - Thuật toán SuperMemo-2 tính hệ số ghi nhớ Ease Factor (`EF` điều chỉnh 1.3 - 3.0) và khoảng cách ngày ôn lũy tiến.
+  - 3 chế độ học Active Recall: `Hàn ➔ Việt` (Nhận diện), `Việt ➔ Hàn` (Phản xạ/Gợi nhớ), và `Nghe ➔ Chọn` (Luyện nghe).
+  - Trắc nghiệm 4 đáp án khách quan trên mặt trước thẻ trước khi lật, chống tự chấm "Good" ảo.
+  - Chế độ gõ từ vựng (Type-In Recall) kiểm tra khả năng nhớ chính xác mặt chữ.
+
+---
+
+### 🔹 Phân Hệ 3: Giai Đoạn 3 - Sổ Tay Ngữ Pháp Thực Chiến (`KoreanGrammarView`)
+- [x] **16 Chủ Điểm Ngữ Pháp Cốt Lõi**:
+  - Động từ `이다` (là) / `아니다` (không phải là).
+  - Tồn tại `있다` (có/ở) / `없다` (không có/không ở).
+  - Đại từ chỉ định `이/그/저` (này / đó / kia).
+  - Trợ từ chủ ngữ `은/는` (nhấn mạnh đề tài/đối chiếu) vs `이/가` (nhấn mạnh chủ ngữ/thông tin mới).
+  - Trợ từ tân ngữ `을/를`.
+  - Trợ từ nơi chốn/thời gian `에` (hướng đến/thời điểm) vs `에서` (hành động diễn ra tại nơi chốn).
+  - Đuôi câu thân mật lịch sự `-아요/어요`.
+  - Đuôi câu trang trọng `-습니다/습니까`.
+  - Đuôi câu mong muốn `-고 싶다`.
+  - Đuôi câu mệnh lệnh & yêu cầu `-(으)세요` / `-아/어 주세요`.
+  - Phủ định `안` & `-지 않다`.
+  - Quá khứ `-았/었어요`.
+  - Tương lai `-(으)ㄹ 거예요`.
+  - Số thuần Hàn & Số Hán-Hàn kèm danh từ chỉ đơn vị đếm (`명`, `개`, `병`, `권`...).
+  - Liên từ nối câu (`và`, `nhưng`, `vì... nên`).
+- [x] **Bài Tập Trắc Nghiệm & Điền Khuyết Tự Động Chấm**: Mỗi bài ngữ pháp tích hợp bài tập tương tác, hiển thị kết quả và giải thích quy tắc sư phạm tức thì.
+- [x] **Trình Lắp Ráp Câu SOV & Luyện Trợ Từ (`SentenceBuilderView`)**:
+  - 10+ câu tình huống đời sống luyện trật tự câu Chủ - Nơi chốn - Tân ngữ - Động từ.
+  - Trắc nghiệm chọn đúng trợ từ gắn vào từng thành phần câu kèm giải thích chi tiết.
+- [x] **Bảng Tra Cứu & Mini Drill Chia Động Từ (`VerbConjugatorView`)**:
+  - Tra cứu 18+ động từ thông dụng, hiển thị bảng 7 thể chia (thân mật, trang trọng, quá khứ, tương lai, phủ định, mong muốn, kính trọng).
+  - Phân tích và chỉ rõ các dạng bất quy tắc phổ biến (`ㅂ, ㄷ, ㅡ, 르`).
+  - Mini Drill thử thách 60 giây luyện phản xạ chia nhanh động từ.
+
+---
+
+### 🔹 Phân Hệ 4: Giai Đoạn 4 - Hội Thoại Giao Tiếp & Nhập Vai (`KoreanDialogueView`)
+- [x] **60+ Mẫu Câu Giao Tiếp Sống Còn**: Phân bổ theo 5 tình huống thực tế (Chào hỏi, Mua sắm & Thanh toán, Ăn uống & Nhà hàng, Hỏi đường & Di chuyển, Khẩn cấp).
+- [x] **Hội Thoại Nhập Vai 2 Chiều (`RoleplayView`)**:
+  - 3 kịch bản thực chiến: Gọi cà phê tại Mega Coffee, Mua đồ tại cửa hàng tiện lợi CU, Đi Taxi tại Seoul.
+  - Giọng đọc thoại NPC bản xứ, phân nhánh câu trả lời thực tế theo ngữ cảnh.
+- [x] **Nhận Diện Giọng Nói Micro (Web Speech Recognition)**: Thu âm phát âm tiếng Hàn `ko-KR` của người học và chấm điểm độ chính xác phát âm theo thời gian thực.
+- [x] **Công Cụ Dịch 2 Chiều Hàn ⇄ Việt (Google GTX API)**:
+  - Dịch câu tự do 2 chiều Hàn ⇄ Việt, phát âm audio giọng đọc bản xứ.
+  - Nút 1-chạm lưu câu dịch thành thẻ Flashcard cá nhân.
+  - Modal cảnh báo bản dịch máy (Safe Machine Translation) cho phép duyệt và chỉnh sửa trước khi lưu.
+
+---
+
+### 🔹 Phân Hệ 5: Cẩm Nang Bí Quyết & Động Lực Học Tập (`StudyAdviceModal`)
+- [x] **16 Lời Khuyên Sư Phạm Thực Chiến & Châm Ngôn Truyền Lửa**:
+  - *Tâm Lý & Động Lực*: Quy tắc 15 phút vàng, giải mã đường cong quên Ebbinghaus, vượt qua nỗi sợ nói sai, nuôi dưỡng động lực ghi nhận từng tiến bộ nhỏ.
+  - *Chữ Cái & Phát Âm*: Lợi thế phát âm của người Việt, cai Romaja, mẹo hình học Âm-Dương, mẹo nhỏ với tờ giấy mỏng kiểm tra hơi bật.
+  - *Gốc Hán & Từ Vựng*: Mỏ vàng Hán-Hàn "học 1 biết 10", Active Recall 3 giây, học cụm từ Collocation, quy tắc 24h vàng sau buổi học.
+  - *Ngữ Pháp & Phản Xạ*: Tư duy đảo ngược SOV, bí kíp phân biệt `-은/는` vs `-이/가`, kỹ thuật Shadowing đọc đuổi cùng người bản xứ, độc thoại tự nói một mình.
+- [x] **Giao Diện Modal Kính Mờ Glassmorphism Cao Cấp**:
+  - Thẻ Spotlight lời khuyên ngẫu nhiên mỗi ngày 🎲.
+  - Phát âm châm ngôn tiếng Hàn bằng TTS `ko-KR`.
+  - Bộ lọc danh mục chip vuốt ngang và ô tìm kiếm từ khóa thời gian thực.
+  - Đánh dấu thói quen đã áp dụng ✅ kèm thanh tiến độ làm chủ (`localStorage`).
+  - Nút 1-chạm sao chép chia sẻ lời khuyên.
+
+---
+
+### 🔹 Phân Hệ 6: Gamification, Thói Quen & Flashcard SRS Tiếng Anh
+- [x] **Chuỗi Ngày Học Liên Tục (Streak 🔥)**: Tính toán tự động theo ngày lịch thực tế và hiển thị huy hiệu ngọn lửa nhấp nháy trên Header và Modal.
+- [x] **Nhiệm Vụ Hàng Ngày (`DailyQuestsModal`)**: 3 nhiệm vụ ngày (Học 5 thẻ mới, Ôn tập 5 thẻ, Học 1 bài ngữ pháp) có thanh tiến độ và ma trận chăm chỉ 14 ngày (14-Day Heatmap).
+- [x] **Kho Từ Vựng Flashcards Tiếng Anh Oxford 5000 (`FlashcardView`)**:
+  - 4,954 từ vựng Oxford 3000 & 5000 phân chia theo 13 chủ đề ngữ nghĩa và cấp độ CEFR A1-C1.
+  - Thẻ 3D Flashcard hiệu ứng lật không gian chiều sâu, phát âm audio MP3 / Web Speech API.
+  - Tự động tra nghĩa từ vựng qua Free Dictionary API và lưu vào MongoDB Atlas.
+
+---
+
+### 🔹 Phân Hệ 7: UI/UX & Mobile-First Optimization
+- [x] **Menu Dropdown Ngoài Header**: Tinh giản 4 giai đoạn học vào 1 nút dropdown kính mờ trên Header, giải phóng hơn 140px diện tích hiển thị dọc.
+- [x] **Mobile Header Siêu Mỏng (~36px)**: Tối ưu cho màn hình điện thoại dưới 900px/1024px, logo nhỏ gọn, thanh chuyển tab icon tinh tế.
+- [x] **Mobile Bottom Navigation Bar (`MobileBottomNav`)**: Thanh điều hướng chuẩn ứng dụng di động iOS/Android, hỗ trợ safe area, chuyển nhanh 4 giai đoạn bằng ngón cái.
+- [x] **Footer Glassmorphism Cao Cấp (`Footer.tsx`)**: Logo Hangeul `한`, lối tắt 4 giai đoạn, chip tính năng trọng tâm, hộp châm ngôn tiếng Hàn, nút mở cẩm nang lời khuyên, nút Cuộn lên đầu trang mượt mà.
+- [x] **Chuẩn Mobile 100% (Zero Horizontal Scroll)**: Đảm bảo tương thích hoàn mỹ trên mọi kích cỡ di động (< 1024px, < 768px, < 480px, < 360px). Kích thước chạm cảm ứng $\ge 36\text{px} - 44\text{px}$.
+
+---
+
+### 🔹 Phân Hệ 8: Backend & Cơ Sở Dữ Liệu (NestJS + MongoDB Atlas)
+- [x] **Flashcards Module**:
+  - Cung cấp API CRUD từ vựng flashcard, API tra cứu từ điển tự động (`/api/flashcards/lookup`).
+  - Endpoint cập nhật SuperMemo-2 (`POST /api/flashcards/:id/review`).
+- [x] **Todos Module**:
+  - RESTful API CRUD công việc, lọc theo trạng thái/độ ưu tiên/tìm kiếm, API thống kê (`/api/todos/stats`).
+- [x] **Mongoose Schema & Validation**: DTO đầy đủ validation decorators (`class-validator`), Swagger OpenAPI docs tại `/api/docs`.
+- [x] **MongoDB Atlas**: Kết nối cụm AWS Singapore (`ap-southeast-1`), gói Free M0 512MB, tự động map `_id` sang `id`.
+
+---
+
+### 🔹 Phân Hệ 9: Hạ Tầng Triển Khai AWS & Multi-Root Git
+- [x] **Frontend S3 + CloudFront**: Live tại `https://d3joa566sl3ve2.cloudfront.net` (SSL CDN tốc độ cao, hỗ trợ Single Page Application routing).
+- [x] **Backend EC2 Docker**: Chạy live trên Ubuntu 24.04 Docker (`http://13.228.71.202:4000`).
+- [x] **CloudFront Reverse Proxy (Single Domain)**: Định tuyến `/*` sang S3 và `/api/*` sang EC2, giải quyết triệt để lỗi Mixed Content và CORS.
+- [x] **CI/CD Tự Động (GitHub Actions)**: Kích hoạt tự động khi push tag `v*` cho cả Frontend và Backend.
+- [x] **Multi-Root Git Workspace (3 Repositories)**:
+  - `todo-doc` (`D:\Code\ToDo-List`): Quản lý tài liệu và cấu hình AI Agent.
+  - `todo-fe` (`source/frontend`): Mã nguồn Frontend React 19 TS.
+  - `todo-be` (`source/backend`): Mã nguồn Backend NestJS 12.
+  - Cấu hình qua file `taskflow.code-workspace`.
 
 ---
 
